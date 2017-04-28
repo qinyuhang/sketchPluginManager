@@ -1,0 +1,32 @@
+{
+  "name": "sketch-plugin-manager",
+  "version": "0.0.1",
+  "description": "Sketch plugin manager based on electron",
+  "main": "index.js",
+  "scripts": {
+    "build": "babel app.js -o bundle.js",
+    "test": "npm run test",
+    "start": "npm run build && electron .",
+    "dev" : "supervisor start.js"
+  },
+  "keywords": [
+    "sketchapp",
+    "plugin"
+  ],
+  "author": "qinyuhang",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-plugin-syntax-async-functions": "^6.13.0",
+    "babel-plugin-transform-regenerator": "^6.24.1",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "electron-prebuilt": "^1.4.13",
+    "mocha": "^3.3.0"
+  },
+  "dependencies": {
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "request": "^2.81.0",
+    "showdown": "^1.6.4"
+  }
+}
