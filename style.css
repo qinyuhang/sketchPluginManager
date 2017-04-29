@@ -3,7 +3,7 @@ body{
     overflow: hidden;
     font: caption;
 }
-body, div, ul, li{
+body, div, ul, li, h1, h2, h3, h4, h5{
     margin: 0;
     padding: 0;
 }
@@ -19,8 +19,26 @@ body, div, ul, li{
 }
 .detail-view{
     word-break: break-all;
-    width: calc(70vw - 4rem);
+    width: calc(100vw - 20rem);
     min-width: 24rem;
+    height: 100vh;
+}
+.detail-view .title-bar{
+    height: 6rem;
+    padding: 0.5rem 0.5rem 0 0.5rem;
+    margin-bottom: 0.5rem;
+    box-sizing: border-box;
+    -webkit-app-region: drag;
+}
+.detail-view .detail-container{
+    /* TODO redefine it as a html body to format html convert from markdown     */
+    height: calc(100vh - 7rem);
+    overflow: auto;
+    padding: 0.5rem;
+    box-sizing: border-box;
+}
+.detail-container img{
+    max-width: 100%;
 }
 .left-bar{
     width: 4rem;
@@ -30,6 +48,7 @@ body, div, ul, li{
     align-items: center;
     justify-content: space-between;
     background: rgba(248,157,1,1);
+    -webkit-app-region: drag;
 }
 .left-bar > * {
     width: 4rem;
@@ -37,6 +56,7 @@ body, div, ul, li{
     padding: 0.5rem;
     box-sizing: border-box;
     background-clip: content-box;
+    -webkit-user-select: none;
 }
 .segment{
     display: flex;
@@ -61,8 +81,7 @@ body, div, ul, li{
     flex-shrink: 0;
     background: #fafafa;
     position: relative;
-    max-width: 15rem;
-    min-width: 12rem;
+    width: 16rem;
 }
 .list-view li{
     display: block;
@@ -71,6 +90,7 @@ body, div, ul, li{
     margin: 0.5rem;
     color: #4C4C4C;
     cursor: pointer;
+    -webkit-user-select: none;
 }
 .list-view li.active{
     color: rgba(248,157,1,1);

@@ -7,7 +7,8 @@
     "build": "babel app.js -o bundle.js",
     "test": "npm run test",
     "start": "npm run build && electron .",
-    "dev" : "supervisor start.js"
+    "dev": "supervisor start.js",
+    "pack": "./node_modules/asar/bin/asar.js pack . app.asar"
   },
   "keywords": [
     "sketchapp",
@@ -16,6 +17,7 @@
   "author": "qinyuhang",
   "license": "MIT",
   "devDependencies": {
+    "asar": "^0.13.0",
     "babel-plugin-syntax-async-functions": "^6.13.0",
     "babel-plugin-transform-regenerator": "^6.24.1",
     "babel-polyfill": "^6.23.0",
@@ -24,9 +26,11 @@
     "mocha": "^3.3.0"
   },
   "dependencies": {
+    "node-localstorage": "^1.3.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "request": "^2.81.0",
-    "showdown": "^1.6.4"
+    "showdown": "^1.6.4",
+    "unzip": "^0.1.11"
   }
 }

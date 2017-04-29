@@ -1,5 +1,7 @@
 const request = require('request');
 const fs = require('fs');
+const path = require('path');
+const unzip = require('unzip');
 require("babel-polyfill");
 
 // const detailView = require('./view/detail');
@@ -27,7 +29,9 @@ let readfff = async function(){
 };
 
 function drawList(repoList){
+    // TODO First! using proxy design mode to add a loading img
     try {
+        // TODO here should change to replace ul with loading img
         document.querySelector('ul').remove();
     }catch(e){
 
@@ -58,14 +62,36 @@ function drawList(repoList){
 function drawDetail(obj){
     // up detail is information
     // footer detail is markdown to html
+    // TODO change to using github API to get The readme filename
+    // TODO download the img if related path
+    // TODO fake the GitHub readme style
+    // TODO buffer if already clicked
+    // TODO First! using proxy design mode to add a loading img
+    document.querySelector(".title-bar h1").innerHTML = obj.name;
     const releaseURL = `https://github.com/${obj.owner}/${obj.name}/archive/master.zip`;
     const readMeURL = `https://raw.githubusercontent.com/${obj.owner}/${obj.name}/master/README.md`;
-    fetchData(releaseURL);
-    fetchData(readMeURL);
+
+    const tmpDir = process.env.TMPDIR;
+    let outPath = path.join(tmpDir, `${obj.name}-master.zip`);
+    let outFile = fs.createWriteStream(outPath);
+    request(releaseURL).pipe(outFile);
+
+    fetchData(readMeURL, data => {
+        // Get a readme.md string try convert to html
+        // TODO using promise to check if markdown refer a repo image
+        // Then using download the image first and in resolve replace it
+        // In reject replace with placeholder
+        document.querySelector(".detail-content").innerHTML = utils.convertMarkdown(data);
+    });
 }
 
-function fetchData(){
-
+function fetchData(url, callback){
+    request.get({
+        url : url
+    }, (err, res, body) => {
+        if (err) {console.error(err);return}
+        callback(body)
+    });
 }
 
 function registerSearch(repoList) {

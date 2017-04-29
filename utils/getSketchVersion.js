@@ -8,6 +8,10 @@ module.exports = function(callback){
     const infoPlistPath = path.join(sketchPath, "Contents/Info.plist");
     const parser = new DOMParser();
     fs.readFile(infoPlistPath, (err, data) => {
+        if (err){
+            console.error(err);
+            return;
+        }
         callback(parser.parseFromString(data.toString(),"text/xml"));
     })
 };
