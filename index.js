@@ -11,27 +11,17 @@ const menu = new Menu();
 const storageLocation = app.getPath('userData');
 let nodeStorage = new JSONStorage(storageLocation);
 
-// TODO read last time window info and restore
-// mainly the width and height
 let mainWindow;
 app.on('ready', () => {
-    Menu.setApplicationMenu(null);
-    // console.log(Menu.getApplicationMenu());
-    // menu.append(new MenuItem({
-    //     label: 'Print',
-    //     accelerator: 'CmdOrCtrl+P',
-    //     click: () => { console.log('time to print stuff') }
-    // }));
     let {x, y, width, height} = JSON.parse(nodeStorage.getItem('windowInfo')) || {};
-    // console.log(JSON.parse(nodeStorage.getItem('windowInfo')));
     mainWindow = new BroswerWindow({
         frame: false,
         width: width || 800,
         height: height || 600,
         minWidth: 640,
         minHeight: 250,
-        x: x || 0,
-        y: y || 0
+        x: x || undefined,
+        y: y || undefined
     });
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'index.html'),
@@ -41,15 +31,10 @@ app.on('ready', () => {
     mainWindow.on("resize", saveWindowStatus);
     mainWindow.on("move", saveWindowStatus);
     makeMenu();
-    makeMenuBar();
 });
 
 function makeMenu(){
-
-}
-
-function makeMenuBar(){
-
+    Menu.setApplicationMenu(null);
 }
 
 const saveWindowStatus = (() => {

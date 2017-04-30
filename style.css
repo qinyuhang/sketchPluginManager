@@ -29,6 +29,9 @@ body, div, ul, li, h1, h2, h3, h4, h5{
     margin-bottom: 0.5rem;
     box-sizing: border-box;
     -webkit-app-region: drag;
+    border-bottom: #e0e0e0 1px solid;
+    background-color: #fafafa;
+    position: relative;
 }
 .detail-view .detail-container{
     /* TODO redefine it as a html body to format html convert from markdown     */
@@ -77,7 +80,7 @@ body, div, ul, li, h1, h2, h3, h4, h5{
     background-clip: content-box;
 }
 .list-view{
-    width: 30vw;
+    /*width: 30vw;*/
     flex-shrink: 0;
     background: #fafafa;
     position: relative;
@@ -109,17 +112,28 @@ body, div, ul, li, h1, h2, h3, h4, h5{
     height: 3rem;
     background: #e0e0e0;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    box-sizing: border-box;
 }
 .list-view .search input {
     /* TODO scroll up to hide and scroll down show again */
-    width: 90%;
+    width: 80%;
     height: 50%;
     border-style: hidden;
     border-radius: 0.25rem;
     font-size: 1.25rem;
     color: #000;
+}
+.list-view .search .reload-btn{
+    /*position: absolute;*/
+    height:1.5rem;
+    width: 1.5rem;
+    background: gray;
+    right: 1rem;
+    bottom: 1rem;
 }
 .plugin-list {
     margin-top: 3rem;
@@ -130,16 +144,8 @@ body, div, ul, li, h1, h2, h3, h4, h5{
     cursor: pointer;
     border-radius: 0.125rem;
 }
-.list-view .reload-btn{
-    position: absolute;
-    height:2rem;
-    width: 2rem;
-    background: gray;
-    right: 1rem;
-    bottom: 1rem;
-}
 #install-btn{
-    position: fixed;
+    position: absolute;
     right: 1rem;
     bottom: 1rem;
     width: 4rem;

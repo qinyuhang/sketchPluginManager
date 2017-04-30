@@ -95,20 +95,22 @@ function fetchData(url, callback){
 }
 
 function registerSearch(repoList) {
-    const bufferInput = function(){
-        let self = this;
+    const bufferInput = (function(){
+        // let self = this;
         let ti;
-        if (ti){clearTimeout(ti)}
-        setTimeout( () => {
-            search(self);
-        }, 600);
-    };
-    function search(self){
+        return function(){
+            if (ti){clearTimeout(ti)}
+            ti = setTimeout( () => {
+                search.call(this);
+            }, 600);
+        }
+    })();
+    const search = function(){
         // let self = this;
         // console.log(this);
         let result = [];
         let p = new Promise( (resolve, reject) => {
-            let keyword = self.value;
+            let keyword = this.value;
             if (keyword === ''){
                 resolve(repoList);
             }
@@ -117,7 +119,7 @@ function registerSearch(repoList) {
             repoList.forEach( (v, i) => {
                 // console.log(JSON.stringify(v).toUpperCase());
                 let upString = JSON.stringify(v).toUpperCase();
-                console.log(upString.search(testKey));
+                // console.log(upString.search(testKey));
                 if ( upString.search(testKey)  !== -1){
                     result.push(v);
                 }
