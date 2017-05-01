@@ -190,4 +190,5 @@ body, div, ul, li, h1, h2, h3, h4, h5{
 .toast-layer .toast .toast-text{
     color: #fff;
     font-size: 2rem;
+    text-align: center;
 }

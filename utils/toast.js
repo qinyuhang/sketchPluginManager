@@ -1,39 +1,33 @@
-// TODO 实现一个消息队列
 module.exports = {
-    "error": function(parrentNode, msg, timeout){
-        this.cleanToast(parrentNode);
-        setTimeout( () => {
-            geneTpl(parrentNode, "red", msg, timeout, {});
-            console.error("toast a error");
-        }, 0);
+    "error": function(parentNode, msg, timeout){
+        this.cleanToast(parentNode);
+        geneTpl(parentNode, msg, timeout, {});
+        console.error("toast a error");
     },
-    "info": function (parrentNode) {
-        this.toastPool.push(5);
-        setTimeout( () => {
-
-        }, 0);
-        return this.toastPool.length;
+    "info": function (parentNode, msg, timeout) {
+        this.cleanToast(parentNode);
+        geneTpl(parentNode, msg, timeout, {});
+        console.info("toast a error");
     },
-    "confirm": function (parrentNode) {
-        this.toastPool.push(5);
-        setTimeout( () => {
-
-        }, 0);
-        return this.toastPool.length;
+    "confirm": function (parentNode, msg, timeout) {
+        this.cleanToast(parentNode);
+        geneTpl(parentNode, msg, timeout, {});
+        console.log("toast a error");
     },
-    "loading": function (parrentNode) {
-
+    "loading": function (parentNode, msg, timeout) {
+        this.cleanToast(parentNode);
+        geneTpl(parentNode, "red", msg || "Loading resources", timeout, {});
+        console.log("toast a loading");
     },
-    "cleanToast": function (parrentNode) {
-        if (parrentNode.querySelector('.toast-layer')){
-            parrentNode.querySelector('.toast-layer').remove();
+    "cleanToast": function (parentNode) {
+        if (parentNode.querySelector('.toast-layer')){
+            parentNode.querySelector('.toast-layer').remove();
         }
-    },
-    "toastPool" : []
+    }
 };
 // Control timeout should not be in geneTpl, move it to toast func
 // This func should just return the tpl string
-const geneTpl = function (parentNode, color, msg, timeout, btnObj) {
+const geneTpl = function (parentNode, msg, timeout, btnObj) {
     let tpl = `<div class="toast"><div class="toast-img"></div><div class="toast-text">${msg}</div></div>`;
     let div = document.createElement('div');
     div.className = "toast-layer";
