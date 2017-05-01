@@ -4,11 +4,13 @@ const saveConf = require('./saveConfig');
 const fetchRepo = require('./fetchRepo');
 const toast = require('./toast');
 const convertMarkdown = require('./converMarkdown');
+const GitHubAPI = require('./GitHubAPI');
 module.exports = {
     "sketchVersion"     : sektchVersion,
     "importUtil"        : importUtil,
     "saveConf"          : saveConf,
     "fetchRepo"         : fetchRepo,
     "toast"             : toast,
-    "convertMarkdown"   : convertMarkdown
+    "convertMarkdown"   : convertMarkdown,
+    "GitHubAPI"         : GitHubAPI
 };

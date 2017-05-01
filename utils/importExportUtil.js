@@ -5,5 +5,5 @@ const importExportUtil = {
     exportPlugins(){
 
     }
-}
-module.exports = importExportUtil
+};
+module.exports = importExportUtil;

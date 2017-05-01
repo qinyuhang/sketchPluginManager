@@ -13,8 +13,9 @@ function main() {
     drawLeftBar();
     utils.sketchVersion();
     utils.fetchRepo( body => {
-        drawList(JSON.parse(body));
-        registerSearch(JSON.parse(body));
+        let repoBody = JSON.parse(body);
+        drawList(repoBody);
+        registerSearch(repoBody);
     });
 }
 
@@ -32,30 +33,30 @@ function drawList(repoList){
     // TODO First! using proxy design mode to add a loading img
     try {
         // TODO here should change to replace ul with loading img
-        document.querySelector('ul').remove();
+        document.querySelector("ul").remove();
     }catch(e){
 
     }
-    let ul = document.createElement('ul');
-    document.querySelector('.plugin-list').appendChild(ul);
+    let ul = document.createElement("ul");
+    document.querySelector(".plugin-list").appendChild(ul);
     repoList.forEach( (v, i) => {
         if (!v) {return}
-        let li = document.createElement('li');
+        let li = document.createElement("li");
         li.innerHTML = v.title || v.name;
-        li.setAttribute('data-src', JSON.stringify(v));
+        li.setAttribute("data-src", JSON.stringify(v));
         li.onclick = showDetail;
-        document.querySelector('.list-view ul').appendChild(li)
+        document.querySelector(".list-view ul").appendChild(li)
     });
     function showDetail(){
-        console.log(this);
+        // console.log(this);
         Array.prototype.forEach.call(
             document.querySelectorAll("ul li"),
             v => {
-                v.classList.remove('active');
+                v.classList.remove("active");
             }
         );
-        this.classList.add('active');
-        drawDetail(JSON.parse(this.getAttribute('data-src')));
+        this.classList.add("active");
+        drawDetail(JSON.parse(this.getAttribute("data-src")));
     }
 }
 
@@ -68,29 +69,11 @@ function drawDetail(obj){
     // TODO buffer if already clicked
     // TODO First! using proxy design mode to add a loading img
     document.querySelector(".title-bar h1").innerHTML = obj.name;
-    const releaseURL = `https://github.com/${obj.owner}/${obj.name}/archive/master.zip`;
-    const readMeURL = `https://raw.githubusercontent.com/${obj.owner}/${obj.name}/master/README.md`;
-
-    const tmpDir = process.env.TMPDIR;
-    let outPath = path.join(tmpDir, `${obj.name}-master.zip`);
-    let outFile = fs.createWriteStream(outPath);
-    request(releaseURL).pipe(outFile);
-
-    fetchData(readMeURL, data => {
-        // Get a readme.md string try convert to html
-        // TODO using promise to check if markdown refer a repo image
-        // Then using download the image first and in resolve replace it
-        // In reject replace with placeholder
+    document.querySelector(".title-bar .btn").onclick = () => {
+        utils.GitHubAPI.DownloadZip(obj.owner, obj.name);
+    };
+    utils.GitHubAPI.GetReadMe(obj.owner, obj.name, data => {
         document.querySelector(".detail-content").innerHTML = utils.convertMarkdown(data);
-    });
-}
-
-function fetchData(url, callback){
-    request.get({
-        url : url
-    }, (err, res, body) => {
-        if (err) {console.error(err);return}
-        callback(body)
     });
 }
 
@@ -103,15 +86,15 @@ function registerSearch(repoList) {
             ti = setTimeout( () => {
                 search.call(this);
             }, 600);
-        }
+        };
     })();
-    const search = function(){
+    const search = function (){
         // let self = this;
         // console.log(this);
         let result = [];
         let p = new Promise( (resolve, reject) => {
             let keyword = this.value;
-            if (keyword === ''){
+            if (keyword === ""){
                 resolve(repoList);
             }
             console.log(keyword);
@@ -137,8 +120,8 @@ function registerSearch(repoList) {
             drawList(repoList);
         })
 
-    }
-    document.querySelector('.list-view input').oninput = bufferInput;
+    };
+    document.querySelector(".list-view input").oninput = bufferInput;
 }
 
 main();
