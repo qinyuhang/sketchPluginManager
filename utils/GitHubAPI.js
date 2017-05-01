@@ -12,14 +12,14 @@ const GitHubAPI = {
             headers: requestHeader
         }, (err, res, body) => {
             // TODO change this return into toast
-            if (err) { toast.error(); return;}
+            if (err) { toast.error(document.querySelector('.detail-view'), "Unable to connect Github API"); return;}
             // console.log(JSON.parse(body).download_url);
             request.get({
                 url: JSON.parse(body).download_url,
                 headers: requestHeader
             }, (err, res, body) => {
                 // TODO change this return into toast
-                if (err) {console.error(err); return;}
+                if (err) { toast.error(document.querySelector('.detail-view'), "Unable to Download README file"); return;}
                 // console.log(body);
                 callback(body);
             })

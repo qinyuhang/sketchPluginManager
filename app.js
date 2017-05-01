@@ -3,6 +3,9 @@ const fs = require('fs');
 const path = require('path');
 const unzip = require('unzip');
 require("babel-polyfill");
+const JSONStorage = require('node-localstorage').JSONStorage;
+
+let nodeStorage = new JSONStorage(`${process.env.TMPDIR}sketchPluginManager`);
 
 // const detailView = require('./view/detail');
 
@@ -56,6 +59,8 @@ function drawList(repoList){
             }
         );
         this.classList.add("active");
+        utils.toast.cleanToast(document.querySelector('.detail-view'));
+        document.querySelector('.detail-view .detail-content').innerHTML = "";
         drawDetail(JSON.parse(this.getAttribute("data-src")));
     }
 }
@@ -72,9 +77,14 @@ function drawDetail(obj){
     document.querySelector(".title-bar .btn").onclick = () => {
         utils.GitHubAPI.DownloadZip(obj.owner, obj.name);
     };
-    utils.GitHubAPI.GetReadMe(obj.owner, obj.name, data => {
-        document.querySelector(".detail-content").innerHTML = utils.convertMarkdown(data);
-    });
+    if (nodeStorage.getItem(obj.name)) {
+        document.querySelector(".detail-content").innerHTML = utils.convertMarkdown(nodeStorage.getItem(obj.name));
+    }else{
+        utils.GitHubAPI.GetReadMe(obj.owner, obj.name, data => {
+            document.querySelector(".detail-content").innerHTML = utils.convertMarkdown(data);
+            nodeStorage.setItem(obj.name, data);
+        });
+    }
 }
 
 function registerSearch(repoList) {

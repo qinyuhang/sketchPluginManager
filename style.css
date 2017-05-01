@@ -2,6 +2,7 @@ body{
     height: 100vh;
     overflow: hidden;
     font: caption;
+    position: relative;
 }
 body, div, ul, li, h1, h2, h3, h4, h5{
     margin: 0;
@@ -18,6 +19,7 @@ body, div, ul, li, h1, h2, h3, h4, h5{
     height: 100vh;
 }
 .detail-view{
+    position: relative;
     word-break: break-all;
     width: calc(100vw - 20rem);
     min-width: 24rem;
@@ -25,8 +27,7 @@ body, div, ul, li, h1, h2, h3, h4, h5{
 }
 .detail-view .title-bar{
     height: 6rem;
-    padding: 0.5rem 0.5rem 0 0.5rem;
-    margin-bottom: 0.5rem;
+    padding: 0.5rem;
     box-sizing: border-box;
     -webkit-app-region: drag;
     border-bottom: #e0e0e0 1px solid;
@@ -117,6 +118,7 @@ body, div, ul, li, h1, h2, h3, h4, h5{
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     box-sizing: border-box;
+    -webkit-app-region: drag;
 }
 .list-view .search input {
     /* TODO scroll up to hide and scroll down show again */
@@ -152,4 +154,40 @@ body, div, ul, li, h1, h2, h3, h4, h5{
     height: 2.125rem;
     background: #80FF00;
     color: #000;
+}
+.toast-layer{
+    position: absolute;
+    left: 25%;
+    right: 25%;
+    bottom: 50%;
+    top: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.toast-layer .toast{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(0,0,0,0.1);
+    min-width: 9rem;
+    min-height: 5rem;
+    border-radius: 0.5rem;
+    transition: transform 0.5s, background-color 0.5s;
+    transform: translate3d(0,-1rem,0);
+}
+.toast.animation{
+    transform: translate3d(0,0,0);
+    background: rgba(0,0,0,0.5);
+}
+.toast-layer .toast .toast-img{
+    height: 4rem;
+    width: 4rem;
+    background: black;
+}
+.toast-layer .toast .toast-text{
+    color: #fff;
+    font-size: 2rem;
 }

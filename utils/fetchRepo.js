@@ -2,6 +2,7 @@ const request = require('request');
 const fs = require('fs');
 const path = require('path');
 module.exports = function(callback) {
+    // TODO local cache one version until hit the reload btn fetch from GitHub
     if (!callback){ callback = () => {}}
     fs.readFile('pluginRepos.json', (err, data) => {
         if (err) {
