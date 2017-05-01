@@ -16,11 +16,11 @@ module.exports = {
     },
     "loading": function (parentNode, msg, timeout) {
         this.cleanToast(parentNode);
-        geneTpl(parentNode, "red", msg || "Loading resources", timeout, {});
+        geneTpl(parentNode, msg || "Loading resources", timeout, {});
         console.log("toast a loading");
     },
     "cleanToast": function (parentNode) {
-        if (parentNode.querySelector('.toast-layer')){
+        if (!!parentNode.querySelector('.toast-layer')) {
             parentNode.querySelector('.toast-layer').remove();
         }
     }

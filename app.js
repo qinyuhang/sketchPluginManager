@@ -12,11 +12,12 @@ let nodeStorage = new JSONStorage(`${process.env.TMPDIR}sketchPluginManager`);
 const utils = require('./utils/index');
 
 function main() {
-    // TODO load list Gif
+    utils.toast.loading(document.body, undefined, 10000);
     drawLeftBar();
     utils.sketchVersion();
     utils.fetchRepo( body => {
         let repoBody = JSON.parse(body);
+        utils.toast.cleanToast(document.body);
         drawList(repoBody);
         registerSearch(repoBody);
     });
@@ -33,13 +34,11 @@ let readfff = async function(){
 };
 
 function drawList(repoList){
-    // TODO First! using proxy design mode to add a loading img
-    try {
-        // TODO here should change to replace ul with loading img
-        document.querySelector("ul").remove();
-    }catch(e){
 
+    if (!!document.querySelector("ul")){
+        document.querySelector("ul").remove();
     }
+
     let ul = document.createElement("ul");
     document.querySelector(".plugin-list").appendChild(ul);
     repoList.forEach( (v, i) => {
@@ -68,19 +67,23 @@ function drawList(repoList){
 function drawDetail(obj){
     // up detail is information
     // footer detail is markdown to html
-    // TODO change to using github API to get The readme filename
     // TODO download the img if related path
     // TODO fake the GitHub readme style
-    // TODO buffer if already clicked
     // TODO First! using proxy design mode to add a loading img
+    utils.toast.loading(document.querySelector(".detail-view"),"Loading Readme", 10000);
     document.querySelector(".title-bar h1").innerHTML = obj.name;
+    document.querySelector(".title-bar .star-num").innerHTML
+        = `<iframe src="https://ghbtns.com/github-btn.html?user=${obj.owner}&repo=${obj.name}&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px">
+</iframe>`;
     document.querySelector(".title-bar .btn").onclick = () => {
         utils.GitHubAPI.DownloadZip(obj.owner, obj.name);
     };
     if (nodeStorage.getItem(obj.name)) {
+        utils.toast.cleanToast(document.querySelector(".detail-view"));
         document.querySelector(".detail-content").innerHTML = utils.convertMarkdown(nodeStorage.getItem(obj.name));
     }else{
         utils.GitHubAPI.GetReadMe(obj.owner, obj.name, data => {
+            utils.toast.cleanToast(document.querySelector(".detail-view"));
             document.querySelector(".detail-content").innerHTML = utils.convertMarkdown(data);
             nodeStorage.setItem(obj.name, data);
         });
