@@ -2,6 +2,7 @@ const request = require('request');
 const fs = require('fs');
 const path = require('path');
 const unzip = require('unzip');
+const shell = require('electron').shell;
 require("babel-polyfill");
 const JSONStorage = require('node-localstorage').JSONStorage;
 
@@ -70,19 +71,33 @@ function drawDetail(obj){
     // TODO download the img if related path
     // TODO fake the GitHub readme style
     // TODO First! using proxy design mode to add a loading img
+
+    const changeATag = function() {
+        Array.prototype.forEach.call(
+            document.querySelectorAll(".detail-content a"),
+            (v, i) => {
+                v.onclick = e => {
+                    e.preventDefault();
+                    shell.openExternal(e.target.href);
+                }
+            }
+        );
+    };
     utils.toast.loading(document.querySelector(".detail-view"),"Loading Readme", 10000);
     document.querySelector(".title-bar h1").innerHTML = obj.name;
     document.querySelector(".title-bar .star-num").innerHTML = "";
-    document.querySelector(".title-bar .btn").onclick = () => {
+    document.querySelector(".title-bar .btn").onclick = e => {
         utils.GitHubAPI.DownloadZip(obj.owner, obj.name);
     };
     if (nodeStorage.getItem(obj.name)) {
         utils.toast.cleanToast(document.querySelector(".detail-view"));
         document.querySelector(".detail-content").innerHTML = utils.convertMarkdown(nodeStorage.getItem(obj.name));
+        changeATag();
     }else{
         utils.GitHubAPI.GetReadMe(obj.owner, obj.name, data => {
             utils.toast.cleanToast(document.querySelector(".detail-view"));
             document.querySelector(".detail-content").innerHTML = utils.convertMarkdown(data);
+            changeATag();
             nodeStorage.setItem(obj.name, data);
         });
     }
@@ -97,6 +112,8 @@ function drawDetail(obj){
         });
     }
 }
+
+
 
 function registerSearch(repoList) {
     const bufferInput = (function(){

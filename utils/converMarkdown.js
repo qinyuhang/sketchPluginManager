@@ -5,8 +5,5 @@ module.exports = function(markdownString) {
     // TODO grep all <a> and <img>
     // and deal with click a make the app a browser
     // and deal with img refer local img end with not find should change it with GitHub file link?
-    let aTagExp = /<a.+?<\/a>/;
-    let imgTagExp = /<img.+?>/;
-    converter.makeHtml(markdownString).search(aTagExp);
     return converter.makeHtml(markdownString);
 };
