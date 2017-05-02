@@ -4,6 +4,7 @@
   "description": "Sketch plugin manager based on electron",
   "main": "index.js",
   "scripts": {
+    "build-run": "sh start.sh",
     "build": "babel app.js -o bundle.js",
     "test": "npm run test",
     "start": "npm run build && electron .",

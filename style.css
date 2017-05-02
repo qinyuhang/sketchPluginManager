@@ -152,8 +152,11 @@ body, div, ul, li, h1, h2, h3, h4, h5{
     bottom: 1rem;
     width: 4rem;
     height: 2.125rem;
-    background: #80FF00;
     color: #000;
+    border: 1px solid #e0e0e0;
+    text-align: center;
+    padding: 0 1rem;
+    line-height: 2rem;
 }
 .toast-layer{
     position: absolute;

@@ -37,6 +37,8 @@ const geneTpl = function (parentNode, msg, timeout, btnObj) {
         div.querySelector(".toast").classList.add("animation");
     }, 0);
     setTimeout( () => {
-        document.querySelector('.toast-layer').remove();
+        if (document.querySelector('.toast-layer')){
+            document.querySelector('.toast-layer').remove();
+        }
     }, timeout || 3000);
 };

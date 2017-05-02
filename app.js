@@ -34,7 +34,7 @@ let readfff = async function(){
 };
 
 function drawList(repoList){
-
+    // TODO if refresh list should also clean all detail data
     if (!!document.querySelector("ul")){
         document.querySelector("ul").remove();
     }
@@ -72,9 +72,7 @@ function drawDetail(obj){
     // TODO First! using proxy design mode to add a loading img
     utils.toast.loading(document.querySelector(".detail-view"),"Loading Readme", 10000);
     document.querySelector(".title-bar h1").innerHTML = obj.name;
-    document.querySelector(".title-bar .star-num").innerHTML
-        = `<iframe src="https://ghbtns.com/github-btn.html?user=${obj.owner}&repo=${obj.name}&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px">
-</iframe>`;
+    document.querySelector(".title-bar .star-num").innerHTML = "";
     document.querySelector(".title-bar .btn").onclick = () => {
         utils.GitHubAPI.DownloadZip(obj.owner, obj.name);
     };
@@ -86,6 +84,16 @@ function drawDetail(obj){
             utils.toast.cleanToast(document.querySelector(".detail-view"));
             document.querySelector(".detail-content").innerHTML = utils.convertMarkdown(data);
             nodeStorage.setItem(obj.name, data);
+        });
+    }
+    if (nodeStorage.getItem(`${obj.name}_info`)) {
+        document.querySelector(".title-bar .star-num").innerHTML
+            = JSON.parse(nodeStorage.getItem(`${obj.name}_info`)).stargazers_count;
+    }else{
+        utils.GitHubAPI.GetRepoInfo(obj.owner, obj.name, data => {
+            document.querySelector(".title-bar .star-num").innerHTML
+                = JSON.parse(data).stargazers_count;
+            nodeStorage.setItem(`${obj.name}_info`, data);
         });
     }
 }
