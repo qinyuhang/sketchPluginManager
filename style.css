@@ -159,6 +159,19 @@ body, div, ul, li, h1, h2, h3, h4, h5{
     padding: 0 1rem;
     line-height: 2rem;
 }
+#install-btn .btn-text{
+    z-index: 19;
+    color: black;
+    position: relative;
+}
+#install-btn .btn-progress{
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: #34A5DA;
+    z-index: 0;
+}
 .toast-layer{
     position: absolute;
     left: 25%;

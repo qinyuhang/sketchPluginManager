@@ -2,17 +2,17 @@ module.exports = {
     "error": function(parentNode, msg, timeout){
         this.cleanToast(parentNode);
         geneTpl(parentNode, msg, timeout, {});
-        console.error("toast a error");
+        console.log("toast a error");
     },
     "info": function (parentNode, msg, timeout) {
         this.cleanToast(parentNode);
         geneTpl(parentNode, msg, timeout, {});
-        console.info("toast a error");
+        console.info("toast a info");
     },
     "confirm": function (parentNode, msg, timeout) {
         this.cleanToast(parentNode);
         geneTpl(parentNode, msg, timeout, {});
-        console.log("toast a error");
+        console.log("toast a confirm");
     },
     "loading": function (parentNode, msg, timeout) {
         this.cleanToast(parentNode);

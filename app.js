@@ -8,7 +8,7 @@ const JSONStorage = require('node-localstorage').JSONStorage;
 
 let nodeStorage = new JSONStorage(`${process.env.TMPDIR}sketchPluginManager`);
 
-// const detailView = require('./view/detail');
+const pluginDir = path.join(process.env.HOME, "Library/Application Support/com.bohemiancoding.sketch3/Plugins");
 
 const utils = require('./utils/index');
 
@@ -26,13 +26,8 @@ function main() {
 
 
 function drawLeftBar(){
-
+    // TODO bind function to left bar
 }
-
-let readfff = async function(){
-    let x = await fs.readFileSync('package.json');
-    return x;
-};
 
 function drawList(repoList){
     // TODO if refresh list should also clean all detail data
@@ -45,16 +40,16 @@ function drawList(repoList){
     repoList.forEach( (v, i) => {
         if (!v) {return}
         let li = document.createElement("li");
-        li.innerHTML = v.title || v.name;
+        li.innerText = v.title || v.name;
         li.setAttribute("data-src", JSON.stringify(v));
         li.onclick = showDetail;
-        document.querySelector(".list-view ul").appendChild(li)
+        document.querySelector(".list-view ul").appendChild(li);
     });
     function showDetail(){
         // console.log(this);
         Array.prototype.forEach.call(
             document.querySelectorAll("ul li"),
-            v => {
+            (v, i) => {
                 v.classList.remove("active");
             }
         );
@@ -71,6 +66,34 @@ function drawDetail(obj){
     // TODO download the img if related path
     // TODO fake the GitHub readme style
     // TODO First! using proxy design mode to add a loading img
+    let totalL = -1;
+    let curL = -1;
+    let percentage = 0;
+    let didToastWhenNoTotalL = false;
+    const changeDownloadBTN = function() {
+        if (document.querySelector("#install-btn .btn-text").innerText == "Download") {
+            document.querySelector("#install-btn .btn-text").innerText = "Cancel";
+        }else{
+            document.querySelector("#install-btn .btn-text").innerText = "Download";
+        }
+    };
+
+    const changeDownloadProgress = function() {
+        // then change the DOM
+        // TODO if totalL = undefined and curL !== -1
+
+        if (totalL == undefined && curL !== -1){
+            if (!didToastWhenNoTotalL){
+                utils.toast.info(document.body, "Downloading Plugin", 9000);
+                didToastWhenNoTotalL = true;
+            }
+        }
+        if (totalL !== -1 && curL !== -1) {
+            percentage = Number(curL)/Number(totalL);
+            console.log(percentage, curL, totalL);
+            document.querySelector("#install-btn .btn-progress").style.width = percentage*100 + "%";
+        }
+    };
 
     const changeATag = function() {
         Array.prototype.forEach.call(
@@ -83,11 +106,42 @@ function drawDetail(obj){
             }
         );
     };
+
+    document.querySelector("#install-btn .btn-progress").style.width = 0;
+    document.querySelector("#install-btn .btn-text").innerText = "Download";
+
     utils.toast.loading(document.querySelector(".detail-view"),"Loading Readme", 10000);
     document.querySelector(".title-bar h1").innerHTML = obj.name;
     document.querySelector(".title-bar .star-num").innerHTML = "";
     document.querySelector(".title-bar .btn").onclick = e => {
-        utils.GitHubAPI.DownloadZip(obj.owner, obj.name);
+        changeDownloadBTN();
+        utils.GitHubAPI.DownloadZip(obj.owner, obj.name, {
+            "totalLength" : function (totalLeng) {
+                totalL = totalLeng;
+            },
+            "currentLength": function (curLeng) {
+                curL = curLeng;
+                if (totalL !== -1){
+                    changeDownloadProgress();
+                }
+            },
+            "finishs" : function (ZIPpath) {
+                fs.createReadStream(ZIPpath)
+                    .pipe(unzip.Extract({path: pluginDir}))
+                    .on('close', () => {
+                        fs.rename(
+                            path.join(pluginDir, obj.name + '-master'),
+                            path.join(pluginDir, obj.name),
+                            (err, data) => {
+                                if (err) {
+                                    console.log(err);
+                                }
+                            }
+                        );
+                    });
+                utils.toast.info(document.body, "Download Succeed!", 3000);
+            }
+        })
     };
     if (nodeStorage.getItem(obj.name)) {
         utils.toast.cleanToast(document.querySelector(".detail-view"));
