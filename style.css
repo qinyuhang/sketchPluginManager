@@ -71,14 +71,28 @@ body, div, ul, li, h1, h2, h3, h4, h5{
 .segment > * {
     height: 3rem;
     width: 3rem;
-    background-color: #fff;
     margin-bottom: 0.5rem;
     cursor: pointer;
+    background-size: contain;
+    -webkit-transform: scale(0.8);
+    -moz-transform: scale(0.8);
+    -ms-transform: scale(0.8);
+    -o-transform: scale(0.8);
+    transform: scale(0.8);
 }
 .setting{
     cursor: pointer;
-    background: #fff;
     background-clip: content-box;
+}
+.setting > div{
+    background-size: contain;
+    height: 3rem;
+    background-image: url(icon/set.svg);
+    -webkit-transform: scale(0.8);
+    -moz-transform: scale(0.8);
+    -ms-transform: scale(0.8);
+    -o-transform: scale(0.8);
+    transform: scale(0.8);
 }
 .list-view{
     /*width: 30vw;*/
@@ -134,9 +148,10 @@ body, div, ul, li, h1, h2, h3, h4, h5{
     /*position: absolute;*/
     height:1.5rem;
     width: 1.5rem;
-    background: gray;
     right: 1rem;
     bottom: 1rem;
+    background-size: contain;
+    background-image: url(icon/refresh.svg);
 }
 .plugin-list {
     margin-top: 3rem;
