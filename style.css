@@ -216,10 +216,17 @@ body, div, ul, li, h1, h2, h3, h4, h5{
     transform: translate3d(0,0,0);
     background: rgba(0,0,0,0.5);
 }
+.toast.animation .toast-img{
+    transform: rotate(3600deg)!important;
+}
 .toast-layer .toast .toast-img{
     height: 4rem;
     width: 4rem;
-    background: black;
+    background-image: url(icon/refresh-w.svg);
+    background-size: contain;
+    transition-duration: 10s;
+    transition-timing-function: linear;
+    transform: rotate(0deg);
 }
 .toast-layer .toast .toast-text{
     color: #fff;

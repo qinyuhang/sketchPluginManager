@@ -77,12 +77,19 @@ function drawList(repoList){
         drawDetail(JSON.parse(this.getAttribute("data-src")));
     }
     const registReload = function(){
-        document.querySelector(".reload-btn.btn").onclick = e => {
-            let cur = Number(e.target.getAttribute("data-cur"));
-            cur += 3600;
-            e.target.setAttribute("data-cur", cur);
-            e.target.style.transform = `rotate(${cur}deg)`;
-        };
+        document.querySelector(".reload-btn.btn").onclick = (()=>{
+            let ti;
+            return e => {
+                if(ti){clearTimeout(ti)}
+                ti = setTimeout(()=>{
+                    let cur = Number(e.target.getAttribute("data-cur"));
+                    cur += 3600;
+                    e.target.setAttribute("data-cur", cur);
+                    e.target.style.transform = `rotate(${cur}deg)`;
+                    main();
+                }, 2000);
+            };
+        })();
     };
     registReload();
 
