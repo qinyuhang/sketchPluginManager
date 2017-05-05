@@ -11,15 +11,16 @@ let nodeStorage = new JSONStorage(`${process.env.TMPDIR}sketchPluginManager`);
 const pluginDir = path.join(process.env.HOME, "Library/Application Support/com.bohemiancoding.sketch3/Plugins");
 
 const utils = require('./utils/index');
+let repoBody = Object.create(null);
 
 function main() {
     utils.toast.loading(document.body, undefined, 10000);
-    drawLeftBar();
     utils.sketchVersion();
     utils.fetchRepo( body => {
-        let repoBody = JSON.parse(body);
+        repoBody = JSON.parse(body);
         utils.toast.cleanToast(document.body);
         drawList(repoBody);
+        drawLeftBar();
         registerSearch(repoBody);
     });
 }
@@ -27,24 +28,41 @@ function main() {
 
 function drawLeftBar(){
     // TODO bind function to left bar
+    const obj = {
+        "settings": function (node) {
+            node.onclick = e => {
+
+            };
+        },
+        "downloading": function (node) {
+            node.onclick = e => {
+
+            };
+        },
+        "list": function (node) {
+            node.onclick = e => {
+                if (Object.keys(repoBody)){
+                    drawList(repoBody);
+                }
+            };
+        },
+        "installed": function (node) {
+            node.onclick = e =>{
+
+            };
+        }
+    };
+    Array.prototype.forEach.call(
+        document.querySelectorAll(".left-bar div[data-role='btn']"),
+        (v, i) => {
+            obj[v.getAttribute("data-action")](v);
+        }
+    );
+
 }
 
 function drawList(repoList){
     // TODO if refresh list should also clean all detail data
-    if (!!document.querySelector("ul")){
-        document.querySelector("ul").remove();
-    }
-
-    let ul = document.createElement("ul");
-    document.querySelector(".plugin-list").appendChild(ul);
-    repoList.forEach( (v, i) => {
-        if (!v) {return}
-        let li = document.createElement("li");
-        li.innerText = v.title || v.name;
-        li.setAttribute("data-src", JSON.stringify(v));
-        li.onclick = showDetail;
-        document.querySelector(".list-view ul").appendChild(li);
-    });
     function showDetail(){
         // console.log(this);
         Array.prototype.forEach.call(
@@ -58,6 +76,31 @@ function drawList(repoList){
         document.querySelector('.detail-view .detail-content').innerHTML = "";
         drawDetail(JSON.parse(this.getAttribute("data-src")));
     }
+    const registReload = function(){
+        document.querySelector(".reload-btn.btn").onclick = e => {
+            let cur = Number(e.target.getAttribute("data-cur"));
+            cur += 3600;
+            e.target.setAttribute("data-cur", cur);
+            e.target.style.transform = `rotate(${cur}deg)`;
+        };
+    };
+    registReload();
+
+    if (!!document.querySelector("ul")){
+        document.querySelector("ul").remove();
+    }
+    setTimeout( () => {
+        let ul = document.createElement("ul");
+        document.querySelector(".plugin-list").appendChild(ul);
+        repoList.forEach( (v, i) => {
+            if (!v) {return}
+            let li = document.createElement("li");
+            li.innerText = v.title || v.name;
+            li.setAttribute("data-src", JSON.stringify(v));
+            li.onclick = showDetail;
+            document.querySelector(".list-view ul").appendChild(li);
+        });
+    }, 500);
 }
 
 function drawDetail(obj){
@@ -106,7 +149,6 @@ function drawDetail(obj){
             }
         );
     };
-
     document.querySelector("#install-btn .btn-progress").style.width = 0;
     document.querySelector("#install-btn .btn-text").innerText = "Download";
 

@@ -152,6 +152,8 @@ body, div, ul, li, h1, h2, h3, h4, h5{
     bottom: 1rem;
     background-size: contain;
     background-image: url(icon/refresh.svg);
+    transition-duration: 5s;
+    transition-timing-function: linear;
 }
 .plugin-list {
     margin-top: 3rem;

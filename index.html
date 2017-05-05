@@ -9,18 +9,18 @@
     <div class="app">
         <div class="left-bar">
             <div class="segment">
-                <div style="background-image: url(icon/Category.svg)"></div>
-                <div style="background-image: url(icon/download.svg)"></div>
-                <div style="background-image: url(icon/box.svg)"></div>
+                <div style="background-image: url(icon/Category.svg)" data-role="btn" data-action="list"></div>
+                <div style="background-image: url(icon/download.svg)" data-role="btn" data-action="downloading"></div>
+                <div style="background-image: url(icon/box.svg)" data-role="btn" data-action="installed"></div>
             </div>
             <div class="setting">
-                <div  style="background-image: url(icon/set.svg)"></div>
+                <div  style="background-image: url(icon/set.svg)" data-role="btn" data-action="settings"></div>
             </div>
         </div>
         <div class="list-view">
             <div class="search">
                 <input type="text" name="search_key">
-                <div class="reload-btn btn"></div>
+                <div class="reload-btn btn" data-cur="0"></div>
             </div>
             <div class="plugin-list"></div>
         </div>
