@@ -99,7 +99,7 @@ body, div, ul, li, h1, h2, h3, h4, h5{
     flex-shrink: 0;
     background: #fafafa;
     position: relative;
-    width: 16rem;
+    width: 20rem;
 }
 .list-view li{
     display: block;
@@ -119,6 +119,22 @@ body, div, ul, li, h1, h2, h3, h4, h5{
     content: " ";
     margin-top: 0.5rem;
     background: #e0e0e0;
+}
+.list-view li:before{
+    content: " ";
+    display: inline-block;
+    width: 1rem;
+    background-color: white;
+    height: 1rem;
+    margin-right: 0.5rem;
+    border-radius: 0.125rem;
+    border: #e0e0e0 0.0625rem solid;
+    vertical-align: middle;
+    margin-top: -0.25rem;
+    cursor: pointer;
+}
+.list-view li.installed:before{
+    background: rgba(248,157,1,1);
 }
 .list-view .search{
     position: absolute;

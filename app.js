@@ -99,11 +99,18 @@ function drawList(repoList){
     setTimeout( () => {
         let ul = document.createElement("ul");
         document.querySelector(".plugin-list").appendChild(ul);
+        let installedPluginObj = Object.create(null);
+        utils.importUtil.installed().forEach( v => {
+            installedPluginObj[v] = true;
+        });
         repoList.forEach( (v, i) => {
             if (!v) {return}
             let li = document.createElement("li");
             li.innerText = v.title || v.name;
             li.setAttribute("data-src", JSON.stringify(v));
+            if (installedPluginObj[v.title] || installedPluginObj[v.name]) {
+                li.classList.add('installed');
+            }
             li.onclick = showDetail;
             document.querySelector(".list-view ul").appendChild(li);
         });
