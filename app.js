@@ -13,6 +13,11 @@ const pluginDir = path.join(process.env.HOME, "Library/Application Support/com.b
 const utils = require('./utils/index');
 let repoBody = Object.create(null);
 
+let installedPluginObj = Object.create(null);
+utils.importUtil.installed().forEach( v => {
+    installedPluginObj[v] = true;
+});
+
 function main() {
     utils.toast.loading(document.body, undefined, 10000);
     utils.sketchVersion();
@@ -48,7 +53,15 @@ function drawLeftBar(){
         },
         "installed": function (node) {
             node.onclick = e =>{
-
+                drawList(
+                    repoBody.filter( v => {
+                        return !!v;
+                    }).map( (v, i) => {
+                        if (installedPluginObj[v.title] || installedPluginObj[v.name]) {
+                            return v;
+                        }
+                    })
+                );
             };
         }
     };
@@ -99,10 +112,6 @@ function drawList(repoList){
     setTimeout( () => {
         let ul = document.createElement("ul");
         document.querySelector(".plugin-list").appendChild(ul);
-        let installedPluginObj = Object.create(null);
-        utils.importUtil.installed().forEach( v => {
-            installedPluginObj[v] = true;
-        });
         repoList.forEach( (v, i) => {
             if (!v) {return}
             let li = document.createElement("li");
