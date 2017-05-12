@@ -80,11 +80,29 @@ body, div, ul, li, h1, h2, h3, h4, h5{
     -o-transform: scale(0.8);
     transform: scale(0.8);
 }
+.segment .installed{
+    background-image: url(icon/box.svg)
+}
+.segment .download{
+    background-image: url(icon/download.svg)
+}
+.segment .category{
+    background-image: url(icon/box.svg)
+}
+.segment .installed.active{
+    background-image: url(icon/box-w.svg)
+}
+.segment .download.active{
+    background-image: url(icon/download-w.svg)
+}
+.segment .category.active{
+    background-image: url(icon/box-w.svg)
+}
 .setting{
     cursor: pointer;
     background-clip: content-box;
 }
-.setting > div{
+.setting .setting-btn{
     background-size: contain;
     height: 3rem;
     background-image: url(icon/set.svg);
@@ -93,6 +111,9 @@ body, div, ul, li, h1, h2, h3, h4, h5{
     -ms-transform: scale(0.8);
     -o-transform: scale(0.8);
     transform: scale(0.8);
+}
+.setting .setting-btn.active{
+    background-image: url(icon/set-w.svg);
 }
 .list-view{
     /*width: 30vw;*/

@@ -36,16 +36,17 @@ function drawLeftBar(){
     const obj = {
         "settings": function (node) {
             node.onclick = e => {
-
+                obj.handleClass(node, "active");
             };
         },
         "downloading": function (node) {
             node.onclick = e => {
-
+                obj.handleClass(node, "active");
             };
         },
         "list": function (node) {
             node.onclick = e => {
+                obj.handleClass(node, "active");
                 if (Object.keys(repoBody)){
                     drawList(repoBody);
                 }
@@ -53,6 +54,7 @@ function drawLeftBar(){
         },
         "installed": function (node) {
             node.onclick = e =>{
+                obj.handleClass(node, "active");
                 drawList(
                     repoBody.filter( v => {
                         return !!v;
@@ -63,11 +65,26 @@ function drawLeftBar(){
                     })
                 );
             };
+        },
+        "handleClass": function (node, className) {
+            obj.cleanLeftBarActive();
+            node.classList.add(className);
+        },
+        "cleanClass": function (node, className) {
+            node.classList.remove(className);
+        },
+        "cleanLeftBarActive": function () {
+            Array.prototype.forEach.call(
+                document.querySelectorAll(".left-bar div[data-role='btn']"),
+                v => {
+                    obj.cleanClass(v, "active");
+                }
+            );
         }
     };
     Array.prototype.forEach.call(
         document.querySelectorAll(".left-bar div[data-role='btn']"),
-        (v, i) => {
+        v => {
             obj[v.getAttribute("data-action")](v);
         }
     );
