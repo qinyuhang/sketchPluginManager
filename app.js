@@ -18,10 +18,10 @@ utils.importUtil.installed().forEach( v => {
     installedPluginObj[v] = true;
 });
 
-function main() {
+function main(conf) {
     utils.toast.loading(document.body, undefined, 10000);
     utils.sketchVersion();
-    utils.fetchRepo( body => {
+    utils.fetchRepo( !!conf.forceUpdate, body => {
         repoBody = JSON.parse(body);
         utils.toast.cleanToast(document.body);
         drawList(repoBody);
@@ -53,7 +53,7 @@ function drawLeftBar(){
             };
         },
         "installed": function (node) {
-            node.onclick = e =>{
+            node.onclick = e => {
                 obj.handleClass(node, "active");
                 drawList(
                     repoBody.filter( v => {
@@ -110,13 +110,15 @@ function drawList(repoList){
         document.querySelector(".reload-btn.btn").onclick = (()=>{
             let ti;
             return e => {
-                if(ti){clearTimeout(ti)}
+                if(ti){clearTimeout(ti);}
                 ti = setTimeout(()=>{
                     let cur = Number(e.target.getAttribute("data-cur"));
                     cur += 3600;
                     e.target.setAttribute("data-cur", cur);
                     e.target.style.transform = `rotate(${cur}deg)`;
-                    main();
+                    main({
+                        forceUpdate: true
+                    });
                 }, 2000);
             };
         })();
@@ -256,7 +258,7 @@ function registerSearch(repoList) {
         // let self = this;
         let ti;
         return function(){
-            if (ti){clearTimeout(ti)}
+            if (ti){clearTimeout(ti);}
             ti = setTimeout( () => {
                 search.call(this);
             }, 600);
@@ -292,10 +294,10 @@ function registerSearch(repoList) {
             // TODO error handling interaction with users
             console.error("error! ", err);
             drawList(repoList);
-        })
+        });
 
     };
     document.querySelector(".list-view input").oninput = bufferInput;
 }
 
-main();
+main({});
